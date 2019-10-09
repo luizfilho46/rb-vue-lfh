@@ -88,12 +88,26 @@
         <br />
         <h5>
           Domínios
-          <span class="badge badge-info">{{ generate().length }}</span>
+          <span class="badge badge-info">{{ domains.length }}</span>
         </h5>
         <div class="card">
           <div class="class-body">
             <ul class="list-group">
-              <li class="list-group-item" v-for="domain in generate()" v-bind:key="domain">{{ domain }}</li>
+              <li class="list-group-item" v-for="domain in domains" v-bind:key="domain">
+                <div class="row">
+                  <div class="col-md">
+                    {{ domain }}
+                  </div>
+                  <div class="col-md text-right">
+                    <button class="btn btn-info">
+                      <span class="fa fa-shopping-cart">
+
+                      </span>
+                    </button>
+                  </div>
+                </div>
+              
+              </li>
             </ul>
           </div>
         </div>
@@ -112,8 +126,7 @@ export default {
 			prefix: "",
 			sufix: "",
 			prefixes: ["Air", "Jet", "Flight"],
-			sufixes: ["Sufixes", "Station", "Mart"],
-			domains: []
+			sufixes: ["Sufixes", "Station", "Mart"]
 		};
 	},
 	methods: {
@@ -125,7 +138,16 @@ export default {
 			this.sufixes.push(sufix);
 			this.sufix = "";
 		},
-		generate() {
+		removePrefix(prefix) {
+			this.prefixes.splice(this.prefixes.indexOf(prefix), 1);
+		},
+		removeSufix(sufix) {
+			this.sufixes.splice(this.sufixes.indexOf(sufix), 1);
+		}
+  },
+
+  computed: {
+    domains() {
 			const domains = [];
 			for (const prefix of this.prefixes) {
 				for (const sufix of this.sufixes) {
@@ -134,15 +156,6 @@ export default {
       }
       return domains;
 		},
-		removePrefix(prefix) {
-			this.prefixes.splice(this.prefixes.indexOf(prefix), 1);
-		},
-		removeSufix(sufix) {
-			this.sufixes.splice(this.sufixes.indexOf(sufix), 1);
-		}
-	},
-  created() {
-    this.domains = this.generate()
   }
 };
 </script>
