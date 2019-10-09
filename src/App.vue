@@ -99,11 +99,11 @@
                     {{ domain }}
                   </div>
                   <div class="col-md text-right">
-                    <button class="btn btn-info">
+                    <a class="btn btn-info" href="http://www.hostgator.com.br" target="_blank">
                       <span class="fa fa-shopping-cart">
 
                       </span>
-                    </button>
+                    </a>
                   </div>
                 </div>
               
