@@ -95,21 +95,21 @@ export default {
       data: {
         query: `
           {
-            prefixes {
+            prefixes:items (type: "prefix") {
               id
               type
               description
             }
-            sufixes {
+            sufixes:items (type: "sufix") {
               description
             }
           }
+
         `
       }
     }).then( ({ data : { data } }) => {
-      console.log( data )
-      // this.prefixes = data.prefixes.map( prefix => prefix.description )
-      // this.sufixes = data.sufixes.map( sufix => sufix.description )
+      this.prefixes = data.prefixes.map( prefix => prefix.description )
+      this.sufixes = data.sufixes.map( sufix => sufix.description )
     })
   }
 };
