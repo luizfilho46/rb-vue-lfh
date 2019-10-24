@@ -11,6 +11,7 @@
       <div class="container">
         <div class="row">
           <div class="col-md">
+            <app-item-list v-bind:items="prefixes"></app-item-list>
             <h5>
               Prefixos
               <span class="badge badge-info">{{ prefixes.length }}</span>
@@ -48,6 +49,7 @@
             </div>
           </div>
           <div class="col-md">
+            <app-item-list v-bind:items="sufixes"></app-item-list>
             <h5>
               Sufixos
               <span class="badge badge-info">{{ sufixes.length }}</span>
@@ -119,8 +121,13 @@
 <script>
 import "bootstrap/dist/css/bootstrap.css";
 import "font-awesome/css/font-awesome.css";
+import AppItemList from './components/AppItemList';
+
 export default {
-	name: "app",
+  name: "app",
+  components: {
+    AppItemList
+  },
 	data: function() {
 		return {
 			prefix: "",
@@ -161,7 +168,7 @@ export default {
         }
       }
       return domains;
-		},
+    },
   }
 };
 </script>
