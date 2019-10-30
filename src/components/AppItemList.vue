@@ -7,11 +7,11 @@
     <div class="card">
       <div class="card-body">
         <ul class="list-group">
-          <li class="list-group-item" v-for="item_ in items" v-bind:key="item_">
+          <li class="list-group-item" v-for="item_ in items" v-bind:key="item_.id">
             <div class="row">
-              <div class="col=md">{{ item_ }}</div>
+              <div class="col=md">{{ item_.description }}</div>
               <div class="col-md text-right">
-                <button class="btn btn-info" v-on:click="removeItem(item)">
+                <button class="btn btn-info" v-on:click="removeItem(item_)">
                   <span class="fa fa-trash"></span>
                 </button>
               </div>

@@ -88,7 +88,22 @@ export default {
 			this.sufixes.push(sufix);
 		},
 		removePrefix(prefix) {
-			this.prefixes.splice(this.prefixes.indexOf(prefix), 1);
+			axios({
+        url: 'http://localhost:4000',
+        method: 'post',
+        data: {
+          query: `
+            mutation ($id: Int) {
+              deleted: deleteItem(id: $id) 
+            }
+          `,
+          variables: {
+            id: prefix.id
+          }
+        }
+      }).then( () => {
+        this.getPrefixes()
+      })
 		},
 		removeSufix(sufix) {
 			this.sufixes.splice(this.sufixes.indexOf(sufix), 1);
@@ -110,7 +125,7 @@ export default {
           `
         }
       }).then( ({ data : { data } }) => {
-        this.prefixes = data.prefixes.map( prefix => prefix.description )
+        this.prefixes = data.prefixes
       })  
     },
     getSufixes () {
@@ -128,7 +143,7 @@ export default {
           `
         }
       }).then( ({ data : { data } }) => {
-        this.sufixes = data.sufixes.map( sufix => sufix.description )
+        this.sufixes = data.sufixes
       })
     }
   },
@@ -138,7 +153,7 @@ export default {
 			const domains = [];
 			for (const prefix of this.prefixes) {
 				for (const sufix of this.sufixes) {
-          const name = prefix + sufix;
+          const name = prefix.description + sufix.description;
           const url = name.toLowerCase()
           const checkout = `https://checkout.hostgator.com.br/?a=add&sld=${url}&tld=.com.br`
 					domains.push({
