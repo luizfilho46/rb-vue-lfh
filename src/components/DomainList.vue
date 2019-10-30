@@ -58,7 +58,29 @@ export default {
 	},
 	methods: {
 		addPrefix(prefix) {
-			this.prefixes.push(prefix);
+      axios({
+        url: "http://localhost:4000",
+        method: "post",
+        data: {
+          query: `
+            mutation ($item: ItemInput) {
+              newPrefix: saveItem(item: $item) {
+                id
+                type
+                description
+              }
+            }
+          `,
+          variables: {
+            item: {
+              type: 'prefix',
+              description: prefix
+            }
+          }
+        }
+      }).then( () => {
+        this.getPrefixes()
+      })
 		},
 		addSufix(sufix) {
 			this.sufixes.push(sufix);
@@ -68,7 +90,45 @@ export default {
 		},
 		removeSufix(sufix) {
 			this.sufixes.splice(this.sufixes.indexOf(sufix), 1);
-		}
+    },
+    getPrefixes () {
+      axios({
+        url: 'http://localhost:4000',
+        method: 'post',
+        data: {
+          query: `
+            {
+              prefixes:items (type: "prefix") {
+                id
+                type
+                description
+              }
+            }
+
+          `
+        }
+      }).then( ({ data : { data } }) => {
+        this.prefixes = data.prefixes.map( prefix => prefix.description )
+      })  
+    },
+    getSufixes () {
+      axios({
+        url: 'http://localhost:4000',
+        method: 'post',
+        data: {
+          query: `
+            {
+              sufixes:items (type: "sufix") {
+                description
+              }
+            }
+
+          `
+        }
+      }).then( ({ data : { data } }) => {
+        this.sufixes = data.sufixes.map( sufix => sufix.description )
+      })
+    }
   },
 
   computed: {
@@ -89,28 +149,8 @@ export default {
     },
   },
   created () {
-    axios({
-      url: 'http://localhost:4000',
-      method: 'post',
-      data: {
-        query: `
-          {
-            prefixes:items (type: "prefix") {
-              id
-              type
-              description
-            }
-            sufixes:items (type: "sufix") {
-              description
-            }
-          }
-
-        `
-      }
-    }).then( ({ data : { data } }) => {
-      this.prefixes = data.prefixes.map( prefix => prefix.description )
-      this.sufixes = data.sufixes.map( sufix => sufix.description )
-    })
+    this.getPrefixes()
+    this.getSufixes()
   }
 };
 </script>
