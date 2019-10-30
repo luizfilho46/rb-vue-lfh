@@ -4,10 +4,10 @@
       <div class="container">
         <div class="row">
           <div class="col-md">
-            <app-item-list title="Prefixos" v-bind:items="items.prefix" v-on:addItem="addPrefix" v-on:removeItem="removePrefix"></app-item-list>
+            <app-item-list title="Prefixos" type="prefix" v-bind:items="items.prefix" v-on:addItem="addItem" v-on:removeItem="removeItem"></app-item-list>
           </div>
           <div class="col-md">
-            <app-item-list title="Sufixos" v-bind:items="items.sufix" v-on:addItem="addSufix" v-on:removeItem="removeSufix"></app-item-list>
+            <app-item-list title="Sufixos" type="sufix" v-bind:items="items.sufix" v-on:addItem="addItem" v-on:removeItem="removeItem"></app-item-list>
           </div>
         </div>
         <br />
@@ -59,14 +59,14 @@ export default {
 		};
 	},
 	methods: {
-		addPrefix(prefix) {
+		addItem(item) {
       axios({
         url: "http://localhost:4000",
         method: "post",
         data: {
           query: `
             mutation ($item: ItemInput) {
-              newPrefix: saveItem(item: $item) {
+              newItem: saveItem(item: $item) {
                 id
                 type
                 description
@@ -74,22 +74,16 @@ export default {
             }
           `,
           variables: {
-            item: {
-              type: 'prefix',
-              description: prefix
-            }
+            item
           }
         }
       }).then( response => {
         const query = response.data
-        const newPrefix = query.data.newPrefix
-        this.items.prefix.push(newPrefix)
+        const newItem = query.data.newItem
+        this.items[item.type].push(newItem)
       })
 		},
-		addSufix(sufix) {
-			this.items.sufix.push(sufix);
-		},
-		removePrefix(prefix) {
+		removeItem(item) {
 			axios({
         url: 'http://localhost:4000',
         method: 'post',
@@ -100,16 +94,13 @@ export default {
             }
           `,
           variables: {
-            id: prefix.id
+            id: item.id
           }
         }
       }).then( () => {
-        this.getItems("prefix")
+        this.getItems(item.type)
       })
 		},
-		removeSufix(sufix) {
-			this.sufixes.splice(this.sufixes.indexOf(sufix), 1);
-    },
     getItems (type) {
       axios({
         url: 'http://localhost:4000',
