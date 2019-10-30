@@ -78,8 +78,10 @@ export default {
             }
           }
         }
-      }).then( () => {
-        this.getPrefixes()
+      }).then( response => {
+        const query = response.data
+        const newPrefix = query.data.newPrefix
+        this.prefixes.push(newPrefix.description)
       })
 		},
 		addSufix(sufix) {
