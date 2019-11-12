@@ -20,13 +20,15 @@
             <ul class="list-group">
               <li class="list-group-item" v-for="domain in domains" v-bind:key="domain.name">
                 <div class="row">
-                  <div class="col-md">
+                  <div class="col-md-6">
                     {{ domain.name }}
                   </div>
-                  <div class="col-md text-right">
+                  <div class="col-md-3">
+                    <span class="badge badge-info">{{ domain.available ? 'Disponível' : 'Não Dispinível' }}</span>
+                  </div>
+                  <div class="col-md-3 text-right">
                     <a class="btn btn-info" v-bind:href="domain.checkout" target="_blank">
                       <span class="fa fa-shopping-cart">
-
                       </span>
                     </a>
                   </div>
@@ -128,18 +130,24 @@ export default {
       })  
     },
     generateDomains () {
-      this.domains = [];
-			for (const prefix of this.items.prefix) {
-				for (const sufix of this.items.sufix) {
-          const name = prefix.description + sufix.description;
-          const url = name.toLowerCase()
-          const checkout = `https://checkout.hostgator.com.br/?a=add&sld=${url}&tld=.com.br`
-					this.domains.push({
-            name,
-            checkout
-          });
+      axios({
+        url: "http://localhost:4000",
+        method: "post",
+        data: {
+          query: `
+            mutation {
+              domains: generateDomains {
+                name
+                checkout
+                available
+              }
+            }
+          `
         }
-      }
+      }).then(response => {
+        const query = response.data
+        this.domains = query.data.domains
+      })
     }
   },
   created () {
