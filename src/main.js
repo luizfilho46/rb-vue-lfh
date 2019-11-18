@@ -14,7 +14,8 @@ const router = new VueRouter({
 		},
 		{
 			path: "/domains/:domain",
-			component: DomainView
+			component: DomainView,
+			props: true
 		},
 		{
 			path: "/",

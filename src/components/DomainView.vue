@@ -1,16 +1,22 @@
 <template>
     <div>
-        <div class="text-center">
-            <h2>{{ domain }}</h2>
+        <div class="container">
+            <div class="text-left">
+                <router-link to="/domains">Voltar</router-link>
+                <br />
+                <br />
+                <br />
+                <h2>{{ domain }}</h2>
+            </div>
         </div>
     </div>
 </template>
 
 <script>
     export default {
+        props: ["domain"],
         data() {
             return {
-                domain: ""
             }
         },
         created() {
