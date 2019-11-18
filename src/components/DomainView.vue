@@ -1,6 +1,8 @@
 <template>
     <div>
-        {{ domain }}
+        <div class="text-center">
+            <h2>{{ domain }}</h2>
+        </div>
     </div>
 </template>
 
@@ -12,7 +14,7 @@
             }
         },
         created() {
-            console.log(this.$route.params)
+            this.domain = this.$route.params.domain
         }
     }
 </script>
