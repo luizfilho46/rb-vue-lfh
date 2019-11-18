@@ -8,7 +8,7 @@
       <h6 class="text-secondary">Gerador de nomes utilizando Vue.js</h6>
     </div>
     <div id="main">
-      <DomainList />
+      <router-view></router-view>
     </div>
   </div>
 </template>
