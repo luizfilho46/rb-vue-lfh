@@ -47,6 +47,7 @@
 </template>
 
 <script>
+import { mapState, mapActions} from 'vuex';
  import AppItemList from './AppItemList';
 
 export default {
@@ -58,18 +59,7 @@ export default {
 		return {};
 	},
 	methods: {
-		addItem(item) {
-      this.$store.dispatch("addItem", item)
-		},
-		removeItem(item) {
-      this.$store.dispatch("removeItem", item)
-		},
-    getItems (type) {
-      this.$store.dispatch("getItems", type)
-    },
-    generateDomains () {
-      this.$store.dispatch("generateDomains")
-    },
+		...mapActions(["addItem", "removeItem", "getItems", "generateDomains"]),
     openDomain(domain) {
       this.$router.push({
         path: `/domains/${domain.name}`
@@ -77,20 +67,7 @@ export default {
     }
   },
   computed: {
-    items() {
-      return this.$store.state.items
-    },
-    domains() {
-      return this.$store.state.domains
-    }
-  },
-  created () {
-    Promise.all([
-        this.getItems("prefix"),
-        this.getItems("sufix")
-    ]).then(() => {
-      this.generateDomains()
-    })
+    ...mapState(["items", "domains"])
   }
 };
 </script>

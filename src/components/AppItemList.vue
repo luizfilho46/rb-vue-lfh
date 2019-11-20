@@ -23,7 +23,7 @@
           <input
             class="form-control"
             type="text"
-            placeholder="Digite o sufixo"
+            placeholder="Digite o item"
             v-model="description"
             v-on:keyup.enter="addItem(type, description)"
           />
@@ -53,7 +53,7 @@ export default {
         type,
         description
       })
-      this.item = ""
+      this.description = ""
     },
     removeItem(item) {
       this.$emit("removeItem", item)
